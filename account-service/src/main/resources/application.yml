@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: development
+    active: k8s
 ---
 spring:
   profiles: development
@@ -66,3 +66,25 @@ security:
     client:
       client-id: acme
       access-token-uri: http://localhost:8787
+---
+spring:
+  profiles: k8s
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOSTNAME:mysql}:3306/dev
+    username: root
+    password: dbpass
+    initialize: true
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://${USER_SERVICE_HOSTNAME:user-service}:8181/uaa/user
+    client:
+      client-id: acme
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SERVICE_HOSTNAME:discovery-service}:8761/eureka/

@@ -1,4 +1,4 @@
-spring.profiles.active: development
+spring.profiles.active: k8s
 ---
 spring:
   profiles: development
@@ -38,3 +38,17 @@ spring:
 eureka:
   client:
     enabled: false
+---
+spring:
+  profiles: k8s
+  neo4j:
+    host: ${SPRING_NEO4J_HOST:neo4j}
+    port: ${SPRING_NEO4J_PORT:7474}
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SERVICE_HOSTNAME:discovery-service}:8761/eureka/
